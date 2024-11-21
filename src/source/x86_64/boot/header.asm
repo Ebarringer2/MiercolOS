@@ -24,37 +24,3 @@ multiboot_header:
     dd 8                 ; end tag size (8 bytes)
 
 multiboot_header_end:
-
-section .text
-align 4
-start:
-    ; print "hello world"
-    mov edx, hello_msg   ; load the address of the message into edx
-    call print_string    ; print the string
-
-hang:
-    hlt                  ; halt CPU until next int
-    jmp hang             ; make sure it stays halted if no int
-
-print_string:
-    mov esi, edx         ; load edx into esi
-    mov ah, 0x0E         ; BIOS teletype function
-.next_char:
-    lodsb                ; load byte at ds:si into al
-    test al, al          ; check if end of string
-    jz .done             ; if zero, we out (because its null terminated)
-    int 0x10             ; print the character
-    jmp .next_char       ; repeat
-.done:
-    ret
-
-section .data
-hello_msg db 'hello world', 0  ; null-terminated string (keep in mind for future functions)
-
-section .bss
-align 4
-stack_space resb 8192    ; 8KB reserved for the stack
-
-section .fill
-times 510-($-$$) db 0    ; fill the rest of the boot sector with zeros
-dw 0xAA55                ; boot signature
