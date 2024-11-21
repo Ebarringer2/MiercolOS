@@ -54,7 +54,7 @@ hello_msg db 'hello world', 0  ; null-terminated string (keep in mind for future
 section .bss
 align 4
 stack_space resb 8192    ; 8KB reserved for the stack
-stack_size equ $ - stack_space
 
+section .fill
 times 510-($-$$) db 0    ; fill the rest of the boot sector with zeros
 dw 0xAA55                ; boot signature
