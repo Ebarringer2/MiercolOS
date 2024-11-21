@@ -33,7 +33,8 @@ start:
     call print_string    ; print the string
 
 hang:
-    jmp hang             ; infinite loop to keep the system running (hang system)
+    hlt                  ; halt CPU until next int
+    jmp hang             ; make sure it stays halted if no int
 
 print_string:
     mov esi, edx         ; load edx into esi
